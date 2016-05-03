@@ -1,2 +1,7 @@
-# spinner
-An HTML canvas simulator of two disk drawing
+Spinner
+======
+
+Description
+-----------
+This is a html5/javascript canvas program to draw spinal graph
+with two circles one spinning in another.
