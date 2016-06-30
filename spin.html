@@ -1,87 +1,96 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>spin</title>
+  <title>spin</title>
 </head>
+
 <body>
 
-<div>
+  <div>
 
-<!-- main place to draw -->
+    <!-- main place to draw -->
 
-<canvas id="myCanvas" width="500" height="500" style="border:1px solid #000000;">
-</canvas>
+    <canvas id="myCanvas" width="500" height="500" style="border:1px solid #000000;">
+    </canvas>
 
-</div>
+  </div>
 
-<div>
-	<div>Small Disk r: <input id="r" value="100" /></div>
-	<div>Pen Distance d: <input id="d" value="75" /></div>
-	<div>Starting Angle: <input id="angle0" value="0" /></div>
-	<div>Turns: <input id="turns" value="8" /></div>
-	<div>Color: <input id="strokeStyle" value="#FF0000" /></div>
-	<button onclick="clickedDrawSpinal();">Draw</button>
-	<button onclick="clickedClear();">Clear</button>
-</div>
+  <div>
+    <div>Small Disk r:
+      <input id="r" value="100" />
+    </div>
+    <div>Pen Distance d:
+      <input id="d" value="75" />
+    </div>
+    <div>Starting Angle:
+      <input id="angle0" value="0" />
+    </div>
+    <div>Turns:
+      <input id="turns" value="8" />
+    </div>
+    <div>Color:
+      <input id="strokeStyle" value="#FF0000" />
+    </div>
+    <button onclick="clickedDrawSpinal();">Draw</button>
+    <button onclick="clickedClear();">Clear</button>
+  </div>
 
-<script type="text/javascript">
-	
+  <script type="text/javascript">
+    function clickedClear() {
+      // body...
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+
+      var canvasWidth = c.width;
+      var canvasHeight = c.height;
+
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    }
+
+    function clickedDrawSpinal() {
+      // body...
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+
+      var canvasWidth = c.width;
+      var canvasHeight = c.height;
+
+      var R = Math.min(canvasWidth, canvasHeight) / 2;
+      var r = parseFloat(document.getElementById('r').value);
+      var d = parseFloat(document.getElementById('d').value);
+      var angle0 = parseFloat(document.getElementById('angle0').value);
+      var turns = parseFloat(document.getElementById('turns').value);
+      var strokeStyle = document.getElementById('strokeStyle').value;
+      var x0 = canvasWidth / 2;
+      var y0 = canvasHeight / 2;
+
+      spin(ctx, R, r, d, x0, y0, angle0, turns, strokeStyle);
+    }
+
+    function spin(ctx, R, r, d, x0, y0, angle0, turns, strokeStyle) {
+
+      ctx.strokeStyle = strokeStyle;
 
 
-function clickedClear() {
-	// body...
-	var c = document.getElementById("myCanvas");
-	var ctx = c.getContext("2d");
+      var x = (R - r + d) * Math.cos(angle0);
+      var y = (R - r + d) * Math.sin(angle0);
 
-	var canvasWidth = c.width;
-	var canvasHeight = c.height;
-
-	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-}
-
-function clickedDrawSpinal() {
-	// body...
-	var c = document.getElementById("myCanvas");
-	var ctx = c.getContext("2d");
-
-	var canvasWidth = c.width;
-	var canvasHeight = c.height;
-
-	var R = Math.min(canvasWidth, canvasHeight) / 2;
-	var r = parseFloat(document.getElementById('r').value);
-	var d = parseFloat(document.getElementById('d').value);
-	var angle0 = parseFloat(document.getElementById('angle0').value);
-	var turns = parseFloat(document.getElementById('turns').value);
-	var strokeStyle = document.getElementById('strokeStyle').value;
-	var x0 = canvasWidth/2;
-	var y0 = canvasHeight/2;
-	
-	spin(ctx, R, r, d, x0, y0, angle0, turns, strokeStyle);
-}
-
-function spin(ctx, R, r, d, x0, y0, angle0, turns, strokeStyle) {
-
-	ctx.strokeStyle = strokeStyle;
-	
-
-	var x = (R - r + d) * Math.cos(angle0);
-	var y = (R - r + d) * Math.sin(angle0);
-
-	ctx.moveTo(x0 + x, y0 + y);
-	ctx.beginPath();
-	for (var theta = 0; theta < turns * 2*Math.PI; theta += 0.1) {
-		var A = R * theta;
-		var alpha = A / r;
-		var beta = theta + angle0 - alpha;
-		var Qx = (R - r) * Math.cos(theta + angle0);
-		var Qy = (R - r) * Math.sin(theta + angle0 );
-		x = Qx + d * Math.cos(beta);
-		y = Qy + d * Math.sin(beta);
-		ctx.lineTo(x0 + x,y0 + y);
-		ctx.stroke();
-	}
-}
-
-</script>
+      ctx.moveTo(x0 + x, y0 + y);
+      ctx.beginPath();
+      for (var theta = 0; theta < turns * 2 * Math.PI; theta += 0.1) {
+        var A = R * theta;
+        var alpha = A / r;
+        var beta = theta + angle0 - alpha;
+        var Qx = (R - r) * Math.cos(theta + angle0);
+        var Qy = (R - r) * Math.sin(theta + angle0);
+        x = Qx + d * Math.cos(beta);
+        y = Qy + d * Math.sin(beta);
+        ctx.lineTo(x0 + x, y0 + y);
+        ctx.stroke();
+      }
+    }
+  </script>
 </body>
+
 </html>
